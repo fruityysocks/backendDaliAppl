@@ -1,0 +1,44 @@
+{
+  "name": "express-babel-eslint-node-starter",
+  "version": "7.0.0",
+  "description": "",
+  "author": "CS52",
+  "main": "src/server.js",
+  "scripts": {
+    "test": "eslint src",
+    "prodtest": "cypress run",
+    "start": "nodemon src/server.js --exec babel-node",
+    "babel-start": "babel-node src/server.js",
+    "build": "babel src -d dist",
+    "prod": "node dist/server.js"
+  },
+  "license": "ISC",
+  "engines": {
+    "node": ">=20 <=23"
+  },
+  "nodemonConfig": {
+    "signal": "SIGHUP",
+    "delay": "1500"
+  },
+  "dependencies": {
+    "@babel/cli": "^7.27.1",
+    "@babel/core": "^7.27.1",
+    "@babel/node": "^7.27.1",
+    "@babel/preset-env": "^7.27.1",
+    "body-parser": "^2.2.0",
+    "cors": "^2.8.5",
+    "cypress": "^14.3.3",
+    "ejs": "^3.1.10",
+    "express": "^5.1.0",
+    "mongoose": "^8.14.2",
+    "morgan": "^1.10.0"
+  },
+  "devDependencies": {
+    "@babel/eslint-parser": "^7.27.1",
+    "eslint": "^8.57.1",
+    "eslint-config-airbnb-base": "^15.0.0",
+    "eslint-plugin-babel": "^5.3.1",
+    "eslint-plugin-import": "^2.31.0",
+    "nodemon": "^3.1.10"
+  }
+}

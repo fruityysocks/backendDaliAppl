@@ -1,14 +1,9 @@
-# Title
-TODO: short project description, some screenshots
+# starter express app template
 
-## Setup
+* node with babel
+* expressjs
+* airbnb eslint rules
 
-TODO: how to get the project dev environment up and running, npm install etc
-
-## Deployment
-
-TODO: add deployed link and short description of how you deployed
-
-## Acknowledgments
-
-TODO: provide a list of sources used in project
+Settings for render.com:
+* build command:  `npm install && npm run build`
+* run command:  `npm run prod`
