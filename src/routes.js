@@ -14,14 +14,14 @@ router.route('/posts')
       res.json(posts);
     } catch (error) {
       console.error('error getting posts:', error);
-      res.status(500).json({ error: `get posts error: ${error}` });
+      res.status(404).json({ error: `get posts error: ${error}` });
     }
   });
 
 router.route('/posts/new')
   .post(async (req, res) => {
     const post = await Posts.createPost(req.body);
-    res.status(201).json(post);
+    res.status(200).json(post);
   });
 
 router.route('/posts/:id')
@@ -34,7 +34,7 @@ router.route('/posts/:id')
       return res.json(post);
     } catch (error) {
       console.error('error getting post:', error);
-      return res.status(500).json({ error: `get post error: ${error}` });
+      return res.status(404).json({ error: `get post error: ${error}` });
     }
   })
 
