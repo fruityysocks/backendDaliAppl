@@ -2,7 +2,8 @@ import express from 'express';
 import cors from 'cors';
 import morgan from 'morgan';
 import mongoose from 'mongoose';
-import apiRoutes from './routes';
+import apiRoutes from './routes/routes';
+import slackRoutes from './routes/slackRoutes';
 
 const app = express();
 
@@ -17,27 +18,8 @@ app.get('/', (req, res) => {
   res.send('hi');
 });
 
-app.post('/slack/events',express.json(), (req, res) => {
-  const { type, challenge, event } = req.body;
-
-  if (type === 'url_verification') {
-    return res.send({ challenge });
-  }
-
-  // Respond to event callbacks
-  if (type === 'event_callback') {
-    if (event && event.type === 'message') {
-      console.log('New message:', event.text);
-    }
-
-    // Acknowledge the event
-    return res.sendStatus(200);
-  }
-
-  return res.sendStatus(400);
-});
-
 app.use('/api', apiRoutes);
+app.use('/slack', slackRoutes);
 
 const MONGO_URI = 'mongodb+srv://prishita:neverwhere@cluster0.ykp9w4j.mongodb.net/daliApp?retryWrites=true&w=majority&appName=Cluster0';
 
@@ -55,9 +37,5 @@ async function startServer() {
     console.error(error);
   }
 }
-
-app.listen(9090, () => {
-  console.log('Server is running on port 9090');
-});
 
 startServer();
