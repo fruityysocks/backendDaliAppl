@@ -1,3 +1,4 @@
+/* eslint-disable camelcase */
 /* eslint-disable no-await-in-loop */
 import Nap from '../models/napModel';
 
@@ -55,8 +56,8 @@ export async function fetchOldNaps(channelId) {
       cursor,
       limit: 200,
     });
-
-    const { messages, responseMetadata } = result;
+    // eslint-disable-next-line no-undef
+    const { messages, response_metadata } = result;
     console.log(`Fetched ${messages.length} messages`);
 
     // eslint-disable-next-line no-restricted-syntax
@@ -83,7 +84,8 @@ export async function fetchOldNaps(channelId) {
       }
     }
 
-    cursor = responseMetadata?.next_cursor;
+    // eslint-disable-next-line no-undef
+    cursor = response_metadata?.next_cursor;
     hasMore = !!cursor;
   }
 
