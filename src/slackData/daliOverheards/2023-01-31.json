@@ -1,0 +1,52 @@
+[
+    {
+        "user": "U02NSDU8QQK",
+        "type": "message",
+        "ts": "1675213102.379479",
+        "client_msg_id": "e78104aa-0892-4435-906b-53886556ec3b",
+        "text": "“there’s no reason to drag anything from the past into the future” - <@U02NAHACKQX>",
+        "team": "T02FQFVUX",
+        "user_team": "T02FQFVUX",
+        "source_team": "T02FQFVUX",
+        "user_profile": {
+            "avatar_hash": "bfe74f68aa86",
+            "image_72": "https:\/\/avatars.slack-edge.com\/2024-11-25\/8105175308064_bfe74f68aa863995bf61_72.png",
+            "first_name": "Isabella",
+            "real_name": "Isabella Hochschild",
+            "display_name": "Isabella Hochschild",
+            "team": "T02FQFVUX",
+            "name": "isabella.hochschild",
+            "is_restricted": false,
+            "is_ultra_restricted": false
+        },
+        "blocks": [
+            {
+                "type": "rich_text",
+                "block_id": "7Qjku",
+                "elements": [
+                    {
+                        "type": "rich_text_section",
+                        "elements": [
+                            {
+                                "type": "text",
+                                "text": "“there’s no reason to drag anything from the past into the future” - "
+                            },
+                            {
+                                "type": "user",
+                                "user_id": "U02NAHACKQX"
+                            }
+                        ]
+                    }
+                ]
+            }
+        ]
+    },
+    {
+        "subtype": "channel_join",
+        "user": "U02NAHACKQX",
+        "text": "<@U02NAHACKQX> has joined the channel",
+        "inviter": "U02NSDU8QQK",
+        "type": "message",
+        "ts": "1675213105.653139"
+    }
+]

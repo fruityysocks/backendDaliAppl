@@ -1,0 +1,73 @@
+[
+    {
+        "user": "U02NSDU8QQK",
+        "type": "message",
+        "ts": "1736547548.877769",
+        "edited": {
+            "user": "U02NSDU8QQK",
+            "ts": "1736547567.000000"
+        },
+        "client_msg_id": "95429ed4-feab-4e1e-a46e-ca779cb2058b",
+        "text": "\"rust is like tattoos, i respect when other people do it well but i kinda don't want it - <!subteam^S07NMBSEDEE|@rishay>",
+        "team": "T02FQFVUX",
+        "user_team": "T02FQFVUX",
+        "source_team": "T02FQFVUX",
+        "user_profile": {
+            "avatar_hash": "bfe74f68aa86",
+            "image_72": "https:\/\/avatars.slack-edge.com\/2024-11-25\/8105175308064_bfe74f68aa863995bf61_72.png",
+            "first_name": "Isabella",
+            "real_name": "Isabella Hochschild",
+            "display_name": "Isabella Hochschild",
+            "team": "T02FQFVUX",
+            "name": "isabella.hochschild",
+            "is_restricted": false,
+            "is_ultra_restricted": false
+        },
+        "blocks": [
+            {
+                "type": "rich_text",
+                "block_id": "xlA52",
+                "elements": [
+                    {
+                        "type": "rich_text_section",
+                        "elements": [
+                            {
+                                "type": "text",
+                                "text": "\"rust is like tattoos, i respect when other people do it well but i kinda don't want it - "
+                            },
+                            {
+                                "type": "usergroup",
+                                "usergroup_id": "S07NMBSEDEE"
+                            }
+                        ]
+                    }
+                ]
+            }
+        ],
+        "reactions": [
+            {
+                "name": "rishav-smirk-transparent",
+                "users": [
+                    "U03M4CR829G"
+                ],
+                "count": 1
+            }
+        ]
+    },
+    {
+        "subtype": "channel_join",
+        "user": "U03M4CR829G",
+        "text": "<@U03M4CR829G> has joined the channel",
+        "inviter": "U02NSDU8QQK",
+        "type": "message",
+        "ts": "1736547551.522679"
+    },
+    {
+        "subtype": "channel_join",
+        "user": "U04973UTJFK",
+        "text": "<@U04973UTJFK> has joined the channel",
+        "inviter": "U02NSDU8QQK",
+        "type": "message",
+        "ts": "1736547610.254969"
+    }
+]

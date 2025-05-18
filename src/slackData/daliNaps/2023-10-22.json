@@ -1,0 +1,45 @@
+[
+    {
+        "text": "Alum nap",
+        "files": [
+            {
+                "id": "F0622E4G23G",
+                "mode": "tombstone"
+            }
+        ],
+        "upload": false,
+        "user": "U01FBU7HX2S",
+        "display_as_bot": false,
+        "blocks": [
+            {
+                "type": "rich_text",
+                "block_id": "5JnVp",
+                "elements": [
+                    {
+                        "type": "rich_text_section",
+                        "elements": [
+                            {
+                                "type": "text",
+                                "text": "Alum nap"
+                            }
+                        ]
+                    }
+                ]
+            }
+        ],
+        "type": "message",
+        "ts": "1698007130.159479",
+        "client_msg_id": "1881288D-90A5-4A63-90F9-38086DA8DF83",
+        "reactions": [
+            {
+                "name": "penguin",
+                "users": [
+                    "U036XTP6VGW",
+                    "U03796DAGN8",
+                    "U03M4CR829G"
+                ],
+                "count": 3
+            }
+        ]
+    }
+]

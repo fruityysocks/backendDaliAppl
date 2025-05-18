@@ -1,0 +1,60 @@
+[
+    {
+        "subtype": "channel_join",
+        "user": "U02PB5LKVG9",
+        "text": "<@U02PB5LKVG9> has joined the channel",
+        "inviter": "U01R671S4BD",
+        "type": "message",
+        "ts": "1654182586.321059"
+    },
+    {
+        "user": "UQT9H1B8Q",
+        "type": "message",
+        "ts": "1654186460.544129",
+        "client_msg_id": "80086802-aeef-4450-9e20-6eac792e032a",
+        "text": "the oculus mask hahaha",
+        "team": "T02FQFVUX",
+        "user_team": "T02FQFVUX",
+        "source_team": "T02FQFVUX",
+        "user_profile": {
+            "avatar_hash": "d92de0951a3c",
+            "image_72": "https:\/\/avatars.slack-edge.com\/2020-02-04\/934953802260_d92de0951a3cda3fb927_72.jpg",
+            "first_name": "Jai",
+            "real_name": "Jai Smith",
+            "display_name": "jai",
+            "team": "T02FQFVUX",
+            "name": "jai.smith",
+            "is_restricted": false,
+            "is_ultra_restricted": false
+        },
+        "thread_ts": "1654130428.476389",
+        "parent_user_id": "U01R671S4BD",
+        "blocks": [
+            {
+                "type": "rich_text",
+                "block_id": "kKM",
+                "elements": [
+                    {
+                        "type": "rich_text_section",
+                        "elements": [
+                            {
+                                "type": "text",
+                                "text": "the oculus mask hahaha"
+                            }
+                        ]
+                    }
+                ]
+            }
+        ],
+        "reactions": [
+            {
+                "name": "m",
+                "users": [
+                    "U015JPYEZEG",
+                    "UGNTJPS0L"
+                ],
+                "count": 2
+            }
+        ]
+    }
+]
