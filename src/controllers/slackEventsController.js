@@ -50,6 +50,7 @@ export async function fetchOldNaps(channelId) {
   });
 
   const { messages } = result;
+  console.log(`Fetched ${messages.length} messages`);
 
   // eslint-disable-next-line no-restricted-syntax
   for (const msg in messages) {
