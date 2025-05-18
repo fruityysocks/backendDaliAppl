@@ -22,7 +22,7 @@ app.get('/', (req, res) => {
 app.use('/api', apiRoutes);
 app.use('/slack', slackRoutes);
 
-const MONGO_URI = 'mongodb+srv://prishita:neverwhere@cluster0.ykp9w4j.mongodb.net/daliApp?retryWrites=true&w=majority&appName=Cluster0';
+const { MONGO_URI } = process.env;
 
 app.get('/import-old-naps', async (req, res) => {
   await fetchOldNaps('C54HZT72B');
