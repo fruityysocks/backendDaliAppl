@@ -12,7 +12,6 @@ const NapSchema = new Schema(
     },
     text: {
       type: String,
-      required: true,
     },
     timestamp: {
       type: String,
@@ -20,7 +19,6 @@ const NapSchema = new Schema(
     },
     napImage: {
       type: String,
-      required: true,
     },
   },
   {
