@@ -53,7 +53,7 @@ export async function fetchOldNaps(channelId) {
   console.log(`Fetched ${messages.length} messages`);
 
   // eslint-disable-next-line no-restricted-syntax
-  for (const msg in messages) {
+  for (const msg of messages) {
     if (!msg.subtype && msg.files && msg.files.length > 0) {
       const imageFile = msg.files.find((file) => { return file.mimetype.startsWith('image/'); });
       if (imageFile) {

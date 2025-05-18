@@ -25,8 +25,14 @@ app.use('/api', apiRoutes);
 const { MONGO_URI } = process.env;
 
 app.get('/import-old-naps', async (req, res) => {
-  await fetchOldNaps('C54HZT72B');
-  res.send('Imported old naps!');
+  try {
+    await fetchOldNaps('C54HZT72B');
+    res.setHeader('Content-Type', 'text/plain');
+    res.send('Imported old naps!');
+  } catch (err) {
+    console.error('Error importing old naps:', err);
+    res.status(500).send('Error importing old naps');
+  }
 });
 
 async function startServer() {
