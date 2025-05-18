@@ -3,7 +3,7 @@ import cors from 'cors';
 import morgan from 'morgan';
 import mongoose from 'mongoose';
 import apiRoutes from './routes/routes';
-import slackRoutes from './routes/slackRoutes';
+// import slackRoutes from './routes/slackRoutes';
 import { fetchOldNaps } from './controllers/slackEventsController';
 
 const app = express();
@@ -20,7 +20,7 @@ app.get('/', (req, res) => {
 });
 
 app.use('/api', apiRoutes);
-app.use('/slack', slackRoutes);
+// app.use('/slack', slackRoutes);
 
 const { MONGO_URI } = process.env;
 
