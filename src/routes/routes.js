@@ -1,7 +1,7 @@
 import { Router } from 'express';
 import * as Posts from '../controllers/postController';
 import * as Users from '../controllers/userController';
-// import * as Slacks from './controllers/slackDataController';
+import * as Slacks from '../controllers/slackEventsController';
 
 const router = Router();
 
@@ -138,7 +138,15 @@ router.route('/users/:userId/newPost')
     res.status(200).json(post);
   });
 
-// router.route('/naps')
-//   .get(Slacks.getNaps);
+router.route('/naps')
+  .get(async (req, res) => {
+    try {
+      const naps = await Slacks.getNaps();
+      res.json(naps);
+    } catch (error) {
+      console.error('error getting naps:', error);
+      res.status(404).json({ error: `get naps error: ${error}` });
+    }
+  });
 
 export default router;

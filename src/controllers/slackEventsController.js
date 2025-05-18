@@ -5,7 +5,6 @@ import Nap from '../models/napModel';
 const { WebClient } = require('@slack/web-api');
 
 const slackClient = new WebClient(process.env.SLACK_BOT_TOKEN);
-// const napChannelId = 'C54HZT72B';
 
 export async function handleSlackEvent(req, res) {
   const { type, challenge, event } = req.body;
@@ -22,7 +21,7 @@ export async function handleSlackEvent(req, res) {
       if (event.files && event.files.length > 0) {
         const imageFile = event.files.find((file) => { return file.mimetype.startsWith('image/'); });
         if (imageFile) {
-          imageUrl = imageFile.thumb_720;
+          imageUrl = imageFile.url_private;
 
           const newNap = new Nap({
             userId: event.user,
@@ -75,7 +74,7 @@ export async function fetchOldNaps(channelId) {
             username: userInfo.user.real_name,
             text: msg.text,
             timestamp: msg.ts,
-            napImage: imageFile.thumb_720,
+            napImage: imageFile.private_url,
           });
 
           await newNap.save();
@@ -90,4 +89,14 @@ export async function fetchOldNaps(channelId) {
   }
 
   console.log('Finished importing all old naps');
+}
+
+export async function getNaps() {
+  try {
+    const naps = await Nap.find();
+    console.log('naps found successfully');
+    return naps;
+  } catch (error) {
+    throw new Error(`get naps error: ${error}`);
+  }
 }
