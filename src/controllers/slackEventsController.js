@@ -23,7 +23,7 @@ export async function handleSlackEvent(req, res) {
           imageUrl = imageFile.thumb_720;
 
           const newNap = new Nap({
-            user: event.user,
+            userId: event.user,
             username: userInfo.user.real_name,
             text: event.text,
             timestamp: event.ts,
@@ -65,7 +65,7 @@ export async function fetchOldNaps(channelId) {
         if (existing) continue;
 
         const newNap = new Nap({
-          user: msg.user,
+          userId: msg.user,
           username: userInfo.user.real_name,
           text: msg.text,
           timestamp: msg.ts,
