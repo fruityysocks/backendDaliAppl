@@ -89,7 +89,7 @@ router.route('/users/:userId/:postId')
     try {
       const post = await Posts.getPost(req.params.postId);
       if (!post) {
-        return res.status(404).json({ error: 'p ost not found' });
+        return res.status(404).json({ error: 'post not found' });
       }
       return res.json(post);
     } catch (error) {

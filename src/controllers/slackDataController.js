@@ -17,7 +17,7 @@ const readAllFiles = (folderPath) => {
   return allData;
 };
 
-const usersPath = path.join(__dirname, '../slackData/users.json');
+const usersPath = path.join(__dirname, '../users.json');
 const users = JSON.parse(fs.readFileSync(usersPath, 'utf-8'));
 
 const getSlackUser = (userId) => {
