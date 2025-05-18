@@ -1,7 +1,7 @@
 import { Router } from 'express';
 import * as Posts from './controllers/postController';
 import * as Users from './controllers/userController';
-import * as Slacks from './controllers/slackDataController';
+// import * as Slacks from './controllers/slackDataController';
 
 const router = Router();
 
@@ -138,7 +138,7 @@ router.route('/users/:userId/newPost')
     res.status(200).json(post);
   });
 
-router.route('/naps')
-  .get(Slacks.getNaps);
+// router.route('/naps')
+//   .get(Slacks.getNaps);
 
 export default router;
