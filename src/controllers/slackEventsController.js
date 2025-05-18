@@ -1,3 +1,4 @@
+/* eslint-disable no-await-in-loop */
 import Nap from '../models/napModel';
 
 const { WebClient } = require('@slack/web-api');
@@ -43,40 +44,48 @@ export async function handleSlackEvent(req, res) {
 
   return res.sendStatus(404);
 }
-
 export async function fetchOldNaps(channelId) {
-  const result = await slackClient.conversations.history({
-    channel: channelId,
-  });
+  let hasMore = true;
+  let cursor;
 
-  const { messages } = result;
-  console.log(`Fetched ${messages.length} messages`);
+  while (hasMore) {
+    // eslint-disable-next-line no-await-in-loop
+    const result = await slackClient.conversations.history({
+      channel: channelId,
+      cursor,
+      limit: 200,
+    });
 
-  // eslint-disable-next-line no-restricted-syntax
-  for (const msg of messages) {
-    if (!msg.subtype && msg.files && msg.files.length > 0) {
-      const imageFile = msg.files.find((file) => { return file.mimetype.startsWith('image/'); });
-      if (imageFile) {
-        // eslint-disable-next-line no-await-in-loop
-        const userInfo = await slackClient.users.info({ user: msg.user });
-        // eslint-disable-next-line no-await-in-loop
-        const existing = await Nap.findOne({ timestamp: msg.ts });
-        // eslint-disable-next-line no-continue
-        if (existing) continue;
+    const { messages, responseMetadata } = result;
+    console.log(`Fetched ${messages.length} messages`);
 
-        const newNap = new Nap({
-          userId: msg.user,
-          username: userInfo.user.real_name,
-          text: msg.text,
-          timestamp: msg.ts,
-          napImage: imageFile.thumb_720,
-        });
+    // eslint-disable-next-line no-restricted-syntax
+    for (const msg of messages) {
+      if (!msg.subtype && msg.files && msg.files.length > 0) {
+        const imageFile = msg.files.find((file) => { return file.mimetype.startsWith('image/'); });
+        if (imageFile) {
+          const userInfo = await slackClient.users.info({ user: msg.user });
+          const existing = await Nap.findOne({ timestamp: msg.ts });
+          // eslint-disable-next-line no-continue
+          if (existing) continue;
 
-        // eslint-disable-next-line no-await-in-loop
-        await newNap.save();
-        console.log(`Saved old nap from ${userInfo.user.real_name}`);
+          const newNap = new Nap({
+            userId: msg.user,
+            username: userInfo.user.real_name,
+            text: msg.text,
+            timestamp: msg.ts,
+            napImage: imageFile.thumb_720,
+          });
+
+          await newNap.save();
+          console.log(`Saved old nap from ${userInfo.user.real_name}`);
+        }
       }
     }
+
+    cursor = responseMetadata?.next_cursor;
+    hasMore = !!cursor;
   }
-  console.log('finished importing naps');
+
+  console.log('Finished importing all old naps');
 }
