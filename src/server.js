@@ -17,6 +17,26 @@ app.get('/', (req, res) => {
   res.send('hi');
 });
 
+app.post('/slack/events', (req, res) => {
+  const { type, challenge, event } = req.body;
+
+  if (type === 'url_verification') {
+    return res.send({ challenge });
+  }
+
+  // Respond to event callbacks
+  if (type === 'event_callback') {
+    if (event && event.type === 'message') {
+      console.log('New message:', event.text);
+    }
+
+    // Acknowledge the event
+    return res.sendStatus(200);
+  }
+
+  return res.sendStatus(400);
+});
+
 app.use('/api', apiRoutes);
 
 const MONGO_URI = 'mongodb+srv://prishita:neverwhere@cluster0.ykp9w4j.mongodb.net/daliApp?retryWrites=true&w=majority&appName=Cluster0';
