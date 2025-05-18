@@ -4,6 +4,7 @@ import morgan from 'morgan';
 import mongoose from 'mongoose';
 import apiRoutes from './routes/routes';
 import slackRoutes from './routes/slackRoutes';
+import { fetchOldNaps } from './controllers/slackEventsController';
 
 const app = express();
 
@@ -22,6 +23,11 @@ app.use('/api', apiRoutes);
 app.use('/slack', slackRoutes);
 
 const MONGO_URI = 'mongodb+srv://prishita:neverwhere@cluster0.ykp9w4j.mongodb.net/daliApp?retryWrites=true&w=majority&appName=Cluster0';
+
+app.get('/import-old-naps', async (req, res) => {
+  await fetchOldNaps('C54HZT72B');
+  res.send('Imported old naps!');
+});
 
 async function startServer() {
   try {

@@ -25,6 +25,7 @@
     "@babel/core": "^7.27.1",
     "@babel/node": "^7.27.1",
     "@babel/preset-env": "^7.27.1",
+    "@slack/web-api": "^7.9.1",
     "body-parser": "^2.2.0",
     "cors": "^2.8.5",
     "cypress": "^14.3.3",
