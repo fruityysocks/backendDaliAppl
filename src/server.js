@@ -17,7 +17,7 @@ app.get('/', (req, res) => {
   res.send('hi');
 });
 
-app.post('/slack/events', (req, res) => {
+app.post('/slack/events',express.json(), (req, res) => {
   const { type, challenge, event } = req.body;
 
   if (type === 'url_verification') {
