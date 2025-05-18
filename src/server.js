@@ -5,7 +5,7 @@ import mongoose from 'mongoose';
 import dotenv from 'dotenv';
 import apiRoutes from './routes/routes';
 // import slackRoutes from './routes/slackRoutes';
-// import { fetchOldNaps } from './controllers/slackEventsController';
+import { fetchOldNaps } from './controllers/slackEventsController';
 
 const app = express();
 dotenv.config();
@@ -26,17 +26,17 @@ app.use('/api', apiRoutes);
 
 const mongoUri = process.env.MONGO_URI;
 
-// app.get('/import-old-naps', async (req, res) => {
-// const napChannelId = process.env.NAPS_CHANNEL_ID;
-//   try {
-//     await fetchOldNaps(napChannelId);
-//     res.setHeader('Content-Type', 'text/plain');
-//     res.send('Imported old naps!');
-//   } catch (err) {
-//     console.error('Error importing old naps:', err);
-//     res.status(500).send('Error importing old naps');
-//   }
-// });
+app.get('/import-old-naps', async (req, res) => {
+  const napChannelId = process.env.NAPS_CHANNEL_ID;
+  try {
+    await fetchOldNaps(napChannelId);
+    res.setHeader('Content-Type', 'text/plain');
+    res.send('Imported old naps!');
+  } catch (err) {
+    console.error('Error importing old naps:', err);
+    res.status(500).send('Error importing old naps');
+  }
+});
 
 async function startServer() {
   try {
