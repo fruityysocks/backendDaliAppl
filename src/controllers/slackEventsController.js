@@ -21,7 +21,7 @@ export async function handleSlackEvent(req, res) {
       if (event.files && event.files.length > 0) {
         const imageFile = event.files.find((file) => { return file.mimetype.startsWith('image/'); });
         if (imageFile) {
-          imageUrl = imageFile.url_private;
+          imageUrl = imageFile.thumb_1024;
 
           const newNap = new Nap({
             userId: event.user,
@@ -74,7 +74,7 @@ export async function fetchOldNaps(channelId) {
             username: userInfo.user.real_name,
             text: msg.text,
             timestamp: msg.ts,
-            napImage: imageFile.private_url,
+            napImage: imageFile.thumb_1024,
           });
 
           await newNap.save();
