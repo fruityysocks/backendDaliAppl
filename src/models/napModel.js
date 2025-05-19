@@ -20,6 +20,9 @@ const NapSchema = new Schema(
     napImage: {
       type: String,
     },
+    generatedPoem: {
+      type: String,
+    },
   },
   {
     toObject: { virtuals: true },

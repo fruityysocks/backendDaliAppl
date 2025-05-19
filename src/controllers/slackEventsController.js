@@ -1,5 +1,6 @@
 /* eslint-disable camelcase */
 /* eslint-disable no-await-in-loop */
+import OpenAI from 'openai';
 import Nap from '../models/napModel';
 
 const { WebClient } = require('@slack/web-api');
@@ -79,6 +80,11 @@ export async function fetchOldNaps(channelId) {
 
           await newNap.save();
           console.log(`Saved old nap from ${userInfo.user.real_name}`);
+          if (newNap.napImage) {
+            const poem = await generatePoemFromImage(newNap.imageUrl);
+            console.log('Generated Poem:', poem);
+            await newNap.updateOne({ generatedPoem: poem });
+          }
         }
       }
     }
@@ -98,5 +104,41 @@ export async function getNaps() {
     return naps;
   } catch (error) {
     throw new Error(`get naps error: ${error}`);
+  }
+}
+
+const openai = new OpenAI({
+  apiKey: process.env.OPENAI_API_KEY,
+});
+export async function generatePoemFromImage(imageUrl) {
+  try {
+    if (!imageUrl) {
+      throw new Error('Image URL is required to generate poem.');
+    }
+    const completion = await openai.chat.completions.create({
+      model: 'gpt-4o-mini',
+      modalities: ['text', 'image'],
+      messages: [
+        {
+          role: 'user',
+          content: [
+            {
+              type: 'image_url',
+              image_url: { url: imageUrl },
+            },
+          ],
+        },
+        {
+          role: 'user',
+          content: 'Write a three sentence long poem about the image above. Keep it short and funny; do not make potentially offensive jokes or use curse words.',
+        },
+      ],
+    });
+
+    const poem = completion.choices[0].message.content.trim();
+    return poem;
+  } catch (error) {
+    console.error('Error generating poem from image:', error);
+    throw error;
   }
 }
