@@ -190,7 +190,7 @@ export async function generatePoemFromImage(imageUrl) {
     console.log('running');
 
     console.log('OpenAI completion response:', run);
-    const poem = run.choices[0].message.content.trim();
+    const poem = await run;
     await fsPromises.unlink(tempPath).catch(() => {});
     return poem;
   } catch (error) {
