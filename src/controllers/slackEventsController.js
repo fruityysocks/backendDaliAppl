@@ -26,7 +26,9 @@ export async function findNapFiles(req, res) {
 
       let imageUrl = null;
       if (event.files && event.files.length > 0) {
-        const imageFile = event.files.find((file) => { return file.mimetype.startsWith('image/'); });
+        const imageFile = event.files.find((file) => {
+          return file.mimetype.startsWith('image/');
+        });
         if (imageFile) {
           imageUrl = imageFile.thumb_1024;
 
@@ -55,8 +57,6 @@ export async function findNapFiles(req, res) {
 export async function fetchOldNaps(channelId) {
   let hasMore = true;
   let cursor;
-  createAssistant();
-
   while (hasMore) {
     // eslint-disable-next-line no-await-in-loop
     const result = await slackClient.conversations.history({
@@ -71,7 +71,9 @@ export async function fetchOldNaps(channelId) {
     // eslint-disable-next-line no-restricted-syntax
     for (const msg of messages) {
       if (!msg.subtype && msg.files && msg.files.length > 0) {
-        const imageFile = msg.files.find((file) => { return file?.mimetype && file.mimetype.startsWith('image/'); });
+        const imageFile = msg.files.find((file) => {
+          return file?.mimetype && file.mimetype.startsWith('image/');
+        });
         if (imageFile) {
           const userInfo = await slackClient.users.info({ user: msg.user });
           const existing = await Nap.findOne({ timestamp: msg.ts });
@@ -124,7 +126,8 @@ async function createAssistant() {
     const assistant = await openai.beta.assistants.create({
       model: 'gpt-4.1-mini',
       name: 'poet',
-      instructions: 'Write a three sentence long poem about the image above. Keep it short and funny; do not make potentially offensive jokes or use curse words.',
+      instructions:
+        'Write a three sentence long poem about the image above. Keep it short and funny; do not make potentially offensive jokes or use curse words.',
       tools: [{ type: 'code_interpreter' }],
     });
     console.log('Assistant created:', assistant);
@@ -172,10 +175,10 @@ export async function generatePoemFromImage(imageUrl) {
         },
       ],
     });
-    const run = await openai.beta.threads.runs.create(
-      thread.id,
-      { assistant_id: assistant.id },
-    );
+    const assistant = createAssistant();
+    const run = await openai.beta.threads.runs.create(thread.id, {
+      assistant_id: assistant.id,
+    });
     await fsPromises.unlink(tempPath).catch(() => {});
     console.log('OpenAI completion response:', run);
     const poem = run.choices[0].message.content.trim();
@@ -190,9 +193,7 @@ export async function jpgToPng(url) {
   try {
     const response = await axios.get(url, { responseType: 'arraybuffer' });
     const imageBuffer = Buffer.from(response.data, 'binary');
-    const pngBuffer = await sharp(imageBuffer)
-      .png()
-      .toBuffer();
+    const pngBuffer = await sharp(imageBuffer).png().toBuffer();
     return pngBuffer;
   } catch (error) {
     console.error('Error converting image:', error);
