@@ -162,7 +162,7 @@ export async function generatePoemFromImage(imageUrl) {
     const assistant = await createAssistant();
 
     const thread = await openai.beta.threads.create({
-      assistant_id: assistant.id,
+      // assistant_id: assistant.id,
       messages: [
         {
           role: 'user',
@@ -179,9 +179,13 @@ export async function generatePoemFromImage(imageUrl) {
         },
       ],
     });
+    console.log('thread created');
+
     const run = await openai.beta.threads.runs.create(thread.id, {
       assistant_id: assistant.id,
     });
+    console.log('running');
+
     await fsPromises.unlink(tempPath).catch(() => {});
     console.log('OpenAI completion response:', run);
     const poem = run.choices[0].message.content.trim();
