@@ -158,7 +158,11 @@ export async function generatePoemFromImage(imageUrl) {
       file: fs.createReadStream(tempPath),
       purpose: 'vision',
     });
+
+    const assistant = await createAssistant();
+
     const thread = await openai.beta.threads.create({
+      assistant_id: assistant.id,
       messages: [
         {
           role: 'user',
@@ -175,7 +179,6 @@ export async function generatePoemFromImage(imageUrl) {
         },
       ],
     });
-    const assistant = createAssistant();
     const run = await openai.beta.threads.runs.create(thread.id, {
       assistant_id: assistant.id,
     });
