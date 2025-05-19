@@ -61,6 +61,9 @@ export async function newNapFile(req, res) {
 export async function fetchOldNaps(channelId, assisstantId, threadId) {
   let hasMore = true;
   let cursor;
+  const aId = assisstantId;
+  const tId = threadId;
+  console.log(assisstantId, threadId);
   while (hasMore) {
     // eslint-disable-next-line no-await-in-loop
     const result = await slackClient.conversations.history({
@@ -95,7 +98,7 @@ export async function fetchOldNaps(channelId, assisstantId, threadId) {
           await newNap.save();
           console.log(`Saved old nap from ${userInfo.user.real_name}`);
           if (newNap.napImage) {
-            const poem = await generatePoemFromImage(newNap.napImage, assisstantId, threadId);
+            const poem = await generatePoemFromImage(newNap.napImage, aId, tId);
             console.log('Generated Poem:', poem);
             await newNap.updateOne({ generatedPoem: poem });
           }
