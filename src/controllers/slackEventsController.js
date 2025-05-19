@@ -3,7 +3,7 @@
 import OpenAI from 'openai';
 import axios from 'axios';
 import sharp from 'sharp';
-import fs from 'fs';
+import fs from 'fs/promises';
 import path from 'path';
 import Nap from '../models/napModel';
 
