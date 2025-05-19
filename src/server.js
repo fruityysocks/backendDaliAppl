@@ -5,6 +5,7 @@ import mongoose from 'mongoose';
 import dotenv from 'dotenv';
 import apiRoutes from './routes';
 import { fetchOldNaps } from './controllers/slackEventsController';
+import { initialisingOpenAI } from './controllers/openAIController';
 
 const app = express();
 dotenv.config();
@@ -28,7 +29,8 @@ const napChannelId = process.env.NAPS_CHANNEL_ID;
 
 app.get('/import-old-naps', async (req, res) => {
   try {
-    await fetchOldNaps(napChannelId);
+    const { assisstantId, threadId } = await initialisingOpenAI();
+    await fetchOldNaps(napChannelId, assisstantId, threadId);
     res.setHeader('Content-Type', 'text/plain');
     res.send('Imported old naps!');
   } catch (err) {

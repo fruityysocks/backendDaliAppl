@@ -1,20 +1,19 @@
 /* eslint-disable camelcase */
 /* eslint-disable no-await-in-loop */
-import OpenAI from 'openai';
 import axios from 'axios';
 import sharp from 'sharp';
-import fs from 'fs';
-import fsPromises from 'fs/promises';
-import path from 'path';
 // import WebClient from '@slack/web-api';
 import Nap from '../models/napModel';
+import NapBot from './openAIController';
 
 const { WebClient } = require('@slack/web-api');
 
 const slackClient = new WebClient(process.env.SLACK_BOT_TOKEN);
 
-export async function findNapFiles(req, res) {
-  const { type, challenge, event } = req.body;
+export async function newNapFile(req, res) {
+  const {
+    type, challenge, event, assisstantId, threadId,
+  } = req.body;
 
   if (type === 'url_verification') {
     return res.status(200).send(challenge);
@@ -42,6 +41,11 @@ export async function findNapFiles(req, res) {
 
           await newNap.save();
           console.log('Saved nap:', newNap);
+          if (newNap.napImage) {
+            const poem = await NapBot.generatePoemFromImage(newNap.napImage, assisstantId, threadId);
+            console.log('Generated Poem:', poem);
+            await newNap.updateOne({ generatedPoem: poem });
+          }
         }
       }
     } catch (err) {
@@ -54,7 +58,7 @@ export async function findNapFiles(req, res) {
   return res.sendStatus(404);
 }
 
-export async function fetchOldNaps(channelId) {
+export async function fetchOldNaps(channelId, assisstantId, threadId) {
   let hasMore = true;
   let cursor;
   while (hasMore) {
@@ -91,7 +95,7 @@ export async function fetchOldNaps(channelId) {
           await newNap.save();
           console.log(`Saved old nap from ${userInfo.user.real_name}`);
           if (newNap.napImage) {
-            const poem = await generatePoemFromImage(newNap.napImage);
+            const poem = await NapBot.generatePoemFromImage(newNap.napImage, assisstantId, threadId);
             console.log('Generated Poem:', poem);
             await newNap.updateOne({ generatedPoem: poem });
           }
@@ -114,88 +118,6 @@ export async function getNaps() {
     return naps;
   } catch (error) {
     throw new Error(`get naps error: ${error}`);
-  }
-}
-
-const openai = new OpenAI({
-  apiKey: process.env.OPENAI_API_KEY,
-});
-
-async function createAssistant() {
-  try {
-    const assistant = await openai.beta.assistants.create({
-      model: 'gpt-4.1-mini',
-      name: 'poet',
-      instructions:
-        'You are a funny poet bot. When you recieve an image you come up with amusing poetry inspired from the image.',
-      tools: [{ type: 'code_interpreter' }],
-    });
-    console.log('Assistant created:', assistant);
-    return assistant;
-  } catch (error) {
-    console.error('Error creating assistant:', error);
-    throw error;
-  }
-}
-
-export async function generatePoemFromImage(imageUrl) {
-  try {
-    if (!imageUrl) {
-      throw new Error('Image URL is required to generate poem.');
-    }
-
-    const response = await axios.get(imageUrl, {
-      responseType: 'arraybuffer',
-      headers: {
-        Authorization: `Bearer ${process.env.SLACK_BOT_TOKEN}`,
-      },
-    });
-
-    const tempPath = path.resolve('napImage.jpg');
-    await fsPromises.writeFile(tempPath, response.data);
-
-    const file = await openai.files.create({
-      file: fs.createReadStream(tempPath),
-      purpose: 'vision',
-    });
-
-    const assistant = await createAssistant();
-
-    const thread = await openai.beta.threads.create({
-      // assistant_id: assistant.id,
-      messages: [
-        {
-          role: 'user',
-          content: [
-            {
-              type: 'image_file',
-              image_file: { file_id: file.id },
-            },
-          ],
-        },
-        {
-          role: 'user',
-          content: 'Write a three sentence long poem about the image above. Keep it short and funny; do not make potentially offensive jokes or use curse words.',
-        },
-      ],
-    });
-    console.log('thread created');
-
-    const run = await openai.beta.threads.runs.create(
-      thread.id,
-      {
-        assistant_id: assistant.id,
-      },
-    );
-    console.log('running');
-
-    const poem = await run;
-    console.log('OpenAI completion response:', poem);
-    await fsPromises.unlink(tempPath).catch(() => {});
-    return 'hi';
-  } catch (error) {
-    console.error('Error generating poem from image:', error);
-    throw error;
   }
 }
 
