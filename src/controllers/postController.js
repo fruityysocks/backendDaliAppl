@@ -1,4 +1,4 @@
-import Post from '../models/postModel';
+import Post from '../models/postModel.js';
 
 export async function createPost(userId, postFields) {
   const post = new Post();
