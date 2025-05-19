@@ -3,7 +3,8 @@
 import OpenAI from 'openai';
 import axios from 'axios';
 import sharp from 'sharp';
-import fs from 'fs/promises';
+import fs from 'fs';
+import fsPromises from 'fs/promises';
 import path from 'path';
 import Nap from '../models/napModel';
 
@@ -130,7 +131,7 @@ export async function generatePoemFromImage(imageUrl) {
     });
 
     const tempPath = path.resolve('napImage.jpg');
-    await fs.writeFile(tempPath, response.data);
+    await fsPromises.writeFile(tempPath, response.data);
 
     const file = await openai.files.create({
       file: fs.createReadStream(tempPath),
