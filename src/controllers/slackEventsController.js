@@ -117,6 +117,15 @@ const openai = new OpenAI({
   apiKey: process.env.OPENAI_API_KEY,
 });
 
+const assistant = await openai.beta.assistants.create(
+  {
+    model: 'gpt-4.1-mini',
+    name: 'poet',
+    instructions: 'Write a three sentence long poem about the image above. Keep it short and funny; do not make potentially offensive jokes or use curse words.',
+    tools: [{ type: 'code_interpreter' }],
+  },
+);
+
 export async function generatePoemFromImage(imageUrl) {
   try {
     if (!imageUrl) {
@@ -137,13 +146,7 @@ export async function generatePoemFromImage(imageUrl) {
       file: fs.createReadStream(tempPath),
       purpose: 'vision',
     });
-    const completion = await openai.beta.threads.create({
-    //   model: 'gpt-4.1-mini',
-    //   modalities: ['text'],
-    // });
-
-      // const completion = await openai.beta.threads.addMessage({
-      //   threadId: thread.id,
+    const thread = await openai.beta.threads.create({
       messages: [
         {
           role: 'user',
@@ -156,14 +159,17 @@ export async function generatePoemFromImage(imageUrl) {
         },
         {
           role: 'user',
-          content: 'Write a three sentence long poem about the image above. Keep it short and funny; do not make potentially offensive jokes or use curse words.',
+          content: '',
         },
       ],
     });
-
+    const run = await openai.beta.threads.runs.create(
+      thread.id,
+      { assistant_id: assistant.id },
+    );
     await fsPromises.unlink(tempPath).catch(() => {});
-    console.log('OpenAI completion response:', completion);
-    const poem = completion.choices[0].message.content.trim();
+    console.log('OpenAI completion response:', run);
+    const poem = run.choices[0].message.content.trim();
     return poem;
   } catch (error) {
     console.error('Error generating poem from image:', error);
