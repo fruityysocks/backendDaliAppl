@@ -137,13 +137,13 @@ export async function generatePoemFromImage(imageUrl) {
       file: fs.createReadStream(tempPath),
       purpose: 'vision',
     });
-    const thread = await openai.beta.threads.create({
-      model: 'gpt-4.1-mini',
-      modalities: ['text'],
-    });
+    const completion = await openai.beta.threads.create({
+    //   model: 'gpt-4.1-mini',
+    //   modalities: ['text'],
+    // });
 
-    const completion = await openai.beta.threads.addMessage({
-      threadId: thread.id,
+      // const completion = await openai.beta.threads.addMessage({
+      //   threadId: thread.id,
       messages: [
         {
           role: 'user',
