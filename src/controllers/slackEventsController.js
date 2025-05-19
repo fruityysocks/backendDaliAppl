@@ -173,22 +173,28 @@ export async function generatePoemFromImage(imageUrl) {
             },
           ],
         },
+      ],
+    });
+    console.log('thread created');
+
+    const prompt = await openai.beta.threads.addMessage({
+      threadId: thread.id,
+      message: [
         {
           role: 'user',
           content: 'Write a three sentence long poem about the image above. Keep it short and funny; do not make potentially offensive jokes or use curse words.',
         },
       ],
     });
-    console.log('thread created');
 
-    const run = await openai.beta.threads.runs.create(thread.id, {
-      assistant_id: assistant.id,
-    });
+    // const run = await openai.beta.threads.runs.create(thread.id, {
+    //   assistant_id: assistant.id,
+    // });
     console.log('running');
 
+    console.log('OpenAI completion response:', prompt);
+    const poem = prompt.choices[0].message.content.trim();
     await fsPromises.unlink(tempPath).catch(() => {});
-    console.log('OpenAI completion response:', run);
-    const poem = run.choices[0].message.content.trim();
     return poem;
   } catch (error) {
     console.error('Error generating poem from image:', error);
