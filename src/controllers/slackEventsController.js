@@ -42,7 +42,7 @@ export async function newNapFile(req, res) {
           await newNap.save();
           console.log('Saved nap:', newNap);
           if (newNap.napImage) {
-            const poem = await NapBot.generatePoemFromImage(newNap.napImage, assisstantId, threadId);
+            const poem = await generatePoemFromImage(newNap.napImage, assisstantId, threadId);
             console.log('Generated Poem:', poem);
             await newNap.updateOne({ generatedPoem: poem });
           }
