@@ -31,7 +31,6 @@ app.get('/import-old-naps', async (req, res) => {
   try {
     const { assistantId, threadId } = await initialisingOpenAI();
     await fetchOldNaps(napChannelId, assistantId, threadId);
-    console.log('assistant id', assistantId, threadId);
     res.setHeader('Content-Type', 'text/plain');
     res.send('Imported old naps!');
   } catch (err) {

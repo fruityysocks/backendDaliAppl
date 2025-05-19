@@ -13,6 +13,11 @@ export async function initialisingOpenAI() {
   const thread = await openai.beta.threads.create();
   const assistantId = assistant.id;
   const threadId = thread.id;
+  await openai.beta.threads.messages.create(threadId, {
+    role: 'user',
+    content: 'Write a three sentence long poem for each of the images below. Keep it short and funny; do not make potentially offensive jokes or use curse words.',
+  });
+
   return { assistantId, threadId };
 }
 
@@ -34,7 +39,6 @@ async function createAssistant() {
 }
 
 export async function generatePoemFromImage(imageUrl, assisstantId, threadId) {
-  console.log(assisstantId, threadId);
   try {
     if (!imageUrl) {
       throw new Error('Image URL is required to generate poem.');
@@ -56,23 +60,15 @@ export async function generatePoemFromImage(imageUrl, assisstantId, threadId) {
     });
 
     await openai.beta.threads.messages.create(threadId, {
-      messages: [
+      role: 'user',
+      content: [
         {
-          role: 'user',
-          content: [
-            {
-              type: 'image_file',
-              image_file: { file_id: file.id },
-            },
-          ],
-        },
-        {
-          role: 'user',
-          content:
-            'Write a three sentence long poem about the image above. Keep it short and funny; do not make potentially offensive jokes or use curse words.',
+          type: 'image_file',
+          image_file: { file_id: file.id },
         },
       ],
     });
+
     console.log('thread updated');
 
     const run = await openai.beta.threads.runs.create(threadId, {
