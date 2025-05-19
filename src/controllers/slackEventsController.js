@@ -137,7 +137,7 @@ export async function generatePoemFromImage(imageUrl) {
       file: fs.createReadStream(tempPath),
       purpose: 'vision',
     });
-    const completion = await openai.chat.completions.create({
+    const completion = await openai.beta.threads.create({
       model: 'gpt-4.1-mini',
       modalities: ['text'],
       messages: [
@@ -145,10 +145,8 @@ export async function generatePoemFromImage(imageUrl) {
           role: 'user',
           content: [
             {
-              // type: 'image_file',
-              // image_file: { file_id: file.id },
-              type: 'file',
-              file: { file_id: file.id },
+              type: 'image_file',
+              image_file: { file_id: file.id },
             },
           ],
         },
