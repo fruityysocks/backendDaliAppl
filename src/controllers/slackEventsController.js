@@ -4,7 +4,7 @@ import axios from 'axios';
 import sharp from 'sharp';
 // import WebClient from '@slack/web-api';
 import Nap from '../models/napModel';
-import NapBot from './openAIController';
+import { generatePoemFromImage } from './openAIController';
 
 const { WebClient } = require('@slack/web-api');
 
@@ -95,7 +95,7 @@ export async function fetchOldNaps(channelId, assisstantId, threadId) {
           await newNap.save();
           console.log(`Saved old nap from ${userInfo.user.real_name}`);
           if (newNap.napImage) {
-            const poem = await NapBot.generatePoemFromImage(newNap.napImage, assisstantId, threadId);
+            const poem = await generatePoemFromImage(newNap.napImage, assisstantId, threadId);
             console.log('Generated Poem:', poem);
             await newNap.updateOne({ generatedPoem: poem });
           }
