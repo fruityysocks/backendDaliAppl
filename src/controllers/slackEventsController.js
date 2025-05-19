@@ -161,7 +161,7 @@ export async function generatePoemFromImage(imageUrl) {
       ],
     });
 
-    await fs.unlink(tempPath).catch(() => {});
+    await fsPromises.unlink(tempPath).catch(() => {});
 
     const poem = completion.choices[0].message.content.trim();
     return poem;
