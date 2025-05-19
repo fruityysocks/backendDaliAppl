@@ -1,7 +1,7 @@
 import { Router } from 'express';
-import * as Posts from './controllers/postController.js';
-import * as Users from './controllers/userController.js';
-import * as Slacks from './controllers/slackEventsController.js';
+import * as Posts from './controllers/postController';
+import * as Users from './controllers/userController';
+import * as Slacks from './controllers/slackEventsController';
 
 const router = Router();
 

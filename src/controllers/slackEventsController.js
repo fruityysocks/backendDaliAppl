@@ -6,8 +6,8 @@ import sharp from 'sharp';
 import fs from 'fs';
 import fsPromises from 'fs/promises';
 import path from 'path';
-import Nap from '../models/napModel.js';
 import WebClient from '@slack/web-api';
+import Nap from '../models/napModel';
 
 // const { WebClient } = require('@slack/web-api');
 

@@ -36,10 +36,6 @@
         "args": "none"
       }
     ],
-    "import/extensions": [
-      "error", 
-      "always"
-    ],
     "no-underscore-dangle": 0,
     "arrow-body-style": [
       "error",

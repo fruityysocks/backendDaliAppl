@@ -3,8 +3,8 @@ import cors from 'cors';
 import morgan from 'morgan';
 import mongoose from 'mongoose';
 import dotenv from 'dotenv';
-import apiRoutes from './routes.js';
-import { fetchOldNaps } from './controllers/slackEventsController.js';
+import apiRoutes from './routes';
+import { fetchOldNaps } from './controllers/slackEventsController';
 
 const app = express();
 dotenv.config();

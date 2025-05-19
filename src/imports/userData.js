@@ -1,7 +1,7 @@
 import mongoose from 'mongoose';
 import fs from 'fs';
 import path from 'path';
-import User from '../models/userModel.js';
+import User from '../models/userModel';
 
 // 1. Connect to MongoDB
 mongoose.connect('mongodb+srv://prishita:neverwhere@cluster0.ykp9w4j.mongodb.net/daliApp?retryWrites=true&w=majority&appName=Cluster0', {
