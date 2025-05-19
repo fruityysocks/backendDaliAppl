@@ -1,7 +1,7 @@
-const mongoose = require('mongoose');
-const fs = require('fs');
-const path = require('path');
-const User = require('../models/userModel').default; // Adjust path as needed
+import mongoose from 'mongoose';
+import fs from 'fs';
+import path from 'path';
+import User from '../models/userModel';
 
 // 1. Connect to MongoDB
 mongoose.connect('mongodb+srv://prishita:neverwhere@cluster0.ykp9w4j.mongodb.net/daliApp?retryWrites=true&w=majority&appName=Cluster0', {
