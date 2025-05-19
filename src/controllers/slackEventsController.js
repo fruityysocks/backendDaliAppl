@@ -1,13 +1,17 @@
 /* eslint-disable camelcase */
 /* eslint-disable no-await-in-loop */
 import OpenAI from 'openai';
+import axios from 'axios';
+import sharp from 'sharp';
+import fs from 'fs';
+import path from 'path';
 import Nap from '../models/napModel';
 
 const { WebClient } = require('@slack/web-api');
 
 const slackClient = new WebClient(process.env.SLACK_BOT_TOKEN);
 
-export async function handleSlackEvent(req, res) {
+export async function findNapFiles(req, res) {
   const { type, challenge, event } = req.body;
 
   if (type === 'url_verification') {
@@ -45,6 +49,7 @@ export async function handleSlackEvent(req, res) {
 
   return res.sendStatus(404);
 }
+
 export async function fetchOldNaps(channelId) {
   let hasMore = true;
   let cursor;
@@ -116,6 +121,21 @@ export async function generatePoemFromImage(imageUrl) {
     if (!imageUrl) {
       throw new Error('Image URL is required to generate poem.');
     }
+
+    const response = await axios.get(imageUrl, {
+      responseType: 'arraybuffer',
+      headers: {
+        Authorization: `Bearer ${process.env.SLACK_BOT_TOKEN}`,
+      },
+    });
+
+    const tempPath = path.resolve('napImage.jpg');
+    await fs.writeFile(tempPath, response.data);
+
+    const file = await openai.files.create({
+      file: fs.createReadStream(tempPath),
+      purpose: 'vision',
+    });
     const completion = await openai.chat.completions.create({
       model: 'gpt-4o-mini',
       modalities: ['text', 'image'],
@@ -124,8 +144,8 @@ export async function generatePoemFromImage(imageUrl) {
           role: 'user',
           content: [
             {
-              type: 'image_url',
-              image_url: { url: imageUrl },
+              type: 'image_file',
+              image_file: { file_id: file.id },
             },
           ],
         },
@@ -136,10 +156,26 @@ export async function generatePoemFromImage(imageUrl) {
       ],
     });
 
+    await fs.unlink(tempPath).catch(() => {});
+
     const poem = completion.choices[0].message.content.trim();
     return poem;
   } catch (error) {
     console.error('Error generating poem from image:', error);
+    throw error;
+  }
+}
+
+export async function jpgToPng(url) {
+  try {
+    const response = await axios.get(url, { responseType: 'arraybuffer' });
+    const imageBuffer = Buffer.from(response.data, 'binary');
+    const pngBuffer = await sharp(imageBuffer)
+      .png()
+      .toBuffer();
+    return pngBuffer;
+  } catch (error) {
+    console.error('Error converting image:', error);
     throw error;
   }
 }
