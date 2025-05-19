@@ -145,8 +145,8 @@ export async function generatePoemFromImage(imageUrl) {
           role: 'user',
           content: [
             {
-              type: 'file',
-              file: { file_id: file.id },
+              type: 'image_file',
+              image_file: { file_id: file.id },
             },
           ],
         },
