@@ -81,7 +81,7 @@ export async function fetchOldNaps(channelId) {
           await newNap.save();
           console.log(`Saved old nap from ${userInfo.user.real_name}`);
           if (newNap.napImage) {
-            const poem = await generatePoemFromImage(newNap.imageUrl);
+            const poem = await generatePoemFromImage(newNap.napImage);
             console.log('Generated Poem:', poem);
             await newNap.updateOne({ generatedPoem: poem });
           }
@@ -110,6 +110,7 @@ export async function getNaps() {
 const openai = new OpenAI({
   apiKey: process.env.OPENAI_API_KEY,
 });
+
 export async function generatePoemFromImage(imageUrl) {
   try {
     if (!imageUrl) {
