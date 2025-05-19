@@ -162,7 +162,7 @@ export async function generatePoemFromImage(imageUrl) {
     });
 
     await fsPromises.unlink(tempPath).catch(() => {});
-
+    console.log('OpenAI completion response:', completion);
     const poem = completion.choices[0].message.content.trim();
     return poem;
   } catch (error) {
