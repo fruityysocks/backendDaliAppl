@@ -62,7 +62,7 @@ export async function fetchOldNaps(channelId) {
     // eslint-disable-next-line no-restricted-syntax
     for (const msg of messages) {
       if (!msg.subtype && msg.files && msg.files.length > 0) {
-        const imageFile = msg.files.find((file) => { return file.mimetype.startsWith('image/'); });
+        const imageFile = msg.files.find((file) => { return file?.mimetype && file.mimetype.startsWith('image/'); });
         if (imageFile) {
           const userInfo = await slackClient.users.info({ user: msg.user });
           const existing = await Nap.findOne({ timestamp: msg.ts });
