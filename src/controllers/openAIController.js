@@ -11,8 +11,6 @@ const openai = new OpenAI({
 export async function initialisingOpenAI() {
   const assistant = await createAssistant();
   const thread = await openai.beta.threads.create();
-  console.log(assistant.id);
-  console.log(thread.id);
   const assistantID = assistant.id;
   const threadID = thread.id;
   return { assistantID, threadID };
@@ -36,6 +34,7 @@ async function createAssistant() {
 }
 
 export async function generatePoemFromImage(imageUrl, assisstantId, threadId) {
+  console.log(assisstantId, threadId);
   try {
     if (!imageUrl) {
       throw new Error('Image URL is required to generate poem.');
