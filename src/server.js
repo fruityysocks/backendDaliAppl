@@ -28,6 +28,7 @@ const mongoUri = process.env.MONGO_URI;
 
 app.get('/import-old-naps', async (req, res) => {
   const napChannelId = process.env.NAPS_CHANNEL_ID;
+  console.log(napChannelId);
   try {
     await fetchOldNaps(napChannelId);
     res.setHeader('Content-Type', 'text/plain');
