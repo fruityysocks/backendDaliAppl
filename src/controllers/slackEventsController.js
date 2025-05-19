@@ -55,6 +55,7 @@ export async function findNapFiles(req, res) {
 export async function fetchOldNaps(channelId) {
   let hasMore = true;
   let cursor;
+  createAssistant();
 
   while (hasMore) {
     // eslint-disable-next-line no-await-in-loop
@@ -118,14 +119,21 @@ const openai = new OpenAI({
   apiKey: process.env.OPENAI_API_KEY,
 });
 
-const assistant = await openai.beta.assistants.create(
-  {
-    model: 'gpt-4.1-mini',
-    name: 'poet',
-    instructions: 'Write a three sentence long poem about the image above. Keep it short and funny; do not make potentially offensive jokes or use curse words.',
-    tools: [{ type: 'code_interpreter' }],
-  },
-);
+async function createAssistant() {
+  try {
+    const assistant = await openai.beta.assistants.create({
+      model: 'gpt-4.1-mini',
+      name: 'poet',
+      instructions: 'Write a three sentence long poem about the image above. Keep it short and funny; do not make potentially offensive jokes or use curse words.',
+      tools: [{ type: 'code_interpreter' }],
+    });
+    console.log('Assistant created:', assistant);
+    return assistant;
+  } catch (error) {
+    console.error('Error creating assistant:', error);
+    throw error;
+  }
+}
 
 export async function generatePoemFromImage(imageUrl) {
   try {
