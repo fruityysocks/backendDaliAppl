@@ -74,18 +74,31 @@ export async function generatePoemFromImage(imageUrl, assisstantId, threadId) {
     const run = await openai.beta.threads.runs.create(threadId, {
       assistant_id: assisstantId,
     });
-    console.log('running');
 
-    await run;
-
-    const napThreadResponse = await openai.beta.threads.retrieve(
-      threadId,
+    const completedRun = await waitForRunToFinish(run.id);
+    console.log('Run completed:', completedRun);
+    const lastAssistantMessage = completedRun.messages.find(
+      (msg) => { return msg.role === 'assistant'; },
     );
-    console.log('OpenAI completion response:', napThreadResponse);
-    await fsPromises.unlink(tempPath).catch(() => {});
-    return 'hi';
+    return lastAssistantMessage?.content ?? null;
+
+    // const napThreadResponse = await openai.beta.threads.retrieve(
+    //   threadId,
+    // );
+    // console.log('OpenAI completion response:', napThreadResponse);
+    // await fsPromises.unlink(tempPath).catch(() => {});
+    // return 'hi';
   } catch (error) {
     console.error('Error generating poem from image:', error);
     throw error;
   }
+}
+
+async function waitForRunToFinish(runId) {
+  const completedRun = await openai.threadRuns.poll(runId, {
+    interval: 1000,
+    timeout: 60000,
+  });
+
+  return completedRun;
 }
