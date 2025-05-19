@@ -139,7 +139,7 @@ export async function generatePoemFromImage(imageUrl) {
     });
     const completion = await openai.chat.completions.create({
       model: 'gpt-4o-mini',
-      modalities: ['text', 'image'],
+      modalities: ['text'],
       messages: [
         {
           role: 'user',
