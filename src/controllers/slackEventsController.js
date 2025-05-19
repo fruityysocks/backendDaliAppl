@@ -6,9 +6,8 @@ import sharp from 'sharp';
 import fs from 'fs';
 import fsPromises from 'fs/promises';
 import path from 'path';
+import WebClient from '@slack/web-api';
 import Nap from '../models/napModel';
-
-const { WebClient } = require('@slack/web-api');
 
 const slackClient = new WebClient(process.env.SLACK_BOT_TOKEN);
 
