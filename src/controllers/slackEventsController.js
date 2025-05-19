@@ -63,7 +63,6 @@ export async function fetchOldNaps(channelId, assisstantId, threadId) {
   let cursor;
   const aId = assisstantId;
   const tId = threadId;
-  console.log(assisstantId, threadId);
   while (hasMore) {
     // eslint-disable-next-line no-await-in-loop
     const result = await slackClient.conversations.history({

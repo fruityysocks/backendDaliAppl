@@ -75,7 +75,7 @@ export async function generatePoemFromImage(imageUrl, assisstantId, threadId) {
       assistant_id: assisstantId,
     });
 
-    const completedRun = await waitForRunToFinish(run.id);
+    const completedRun = await waitForRunToFinish(threadId, run.id);
     console.log('Run completed:', completedRun);
     const lastAssistantMessage = completedRun.messages.find(
       (msg) => { return msg.role === 'assistant'; },
@@ -94,11 +94,8 @@ export async function generatePoemFromImage(imageUrl, assisstantId, threadId) {
   }
 }
 
-async function waitForRunToFinish(runId) {
-  const completedRun = await openai.threadRuns.poll(runId, {
-    interval: 1000,
-    timeout: 60000,
-  });
-
-  return completedRun;
+async function waitForRunToFinish(threadId, runId) {
+  const completedRun = await openai.beta.threads.runs.retrieve(threadId, runId);
+  if (completedRun.data.completed_at !== 'null') return true;
+  return false;
 }
