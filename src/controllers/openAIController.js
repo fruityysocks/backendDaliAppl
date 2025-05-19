@@ -11,9 +11,9 @@ const openai = new OpenAI({
 export async function initialisingOpenAI() {
   const assistant = await createAssistant();
   const thread = await openai.beta.threads.create();
-  const assistantID = assistant.id;
-  const threadID = thread.id;
-  return { assistantID, threadID };
+  const assistantId = assistant.id;
+  const threadId = thread.id;
+  return { assistantId, threadId };
 }
 
 async function createAssistant() {
