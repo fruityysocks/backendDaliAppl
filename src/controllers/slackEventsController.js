@@ -138,7 +138,7 @@ export async function generatePoemFromImage(imageUrl) {
       purpose: 'vision',
     });
     const completion = await openai.chat.completions.create({
-      model: 'gpt-4o-mini',
+      model: 'gpt-4.1-mini',
       modalities: ['text'],
       messages: [
         {
