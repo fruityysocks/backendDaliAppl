@@ -120,19 +120,19 @@ export async function getNaps() {
 
     const napsWithImages = await Promise.all(
       naps.map(async (nap) => {
-        let imageBase64 = null;
+        // let imageBase64 = null;
 
         try {
           const pngBuffer = await jpgToPng(nap.imageUrl);
           console.log(pngBuffer);
-          imageBase64 = `data:image/png;base64,${pngBuffer.toString('base64')}`;
+          // imageBase64 = `data:image/png;base64,${pngBuffer.toString('base64')}`;
         } catch (err) {
           console.warn(`Failed to fetch/convert image for nap ${nap._id}: ${err.message}`);
         }
 
         return {
           ...nap.toObject(),
-          imageBase64,
+          // imageBase64,
         };
       }),
     );
@@ -158,9 +158,9 @@ export async function jpgToPng(url) {
   try {
     const response = await axios.get(url, {
       responseType: 'arraybuffer',
-      headers: {
-        Authorization: `Bearer ${process.env.SLACK_BOT_TOKEN}`,
-      },
+      // headers: {
+      //   Authorization: `Bearer ${process.env.SLACK_BOT_TOKEN}`,
+      // },
     });
     const imageBuffer = Buffer.from(response.data, 'binary');
     const pngBuffer = await sharp(imageBuffer).png().toBuffer();
