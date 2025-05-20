@@ -155,7 +155,12 @@ export async function getNap(napId) {
 
 export async function jpgToPng(url) {
   try {
-    const response = await axios.get(url, { responseType: 'arraybuffer' });
+    const response = await axios.get(url, {
+      responseType: 'arraybuffer',
+      headers: {
+        Authorization: `Bearer ${process.env.SLACK_BOT_TOKEN}`,
+      },
+    });
     const imageBuffer = Buffer.from(response.data, 'binary');
     const pngBuffer = await sharp(imageBuffer).png().toBuffer();
     return pngBuffer;
