@@ -78,7 +78,8 @@ export async function generatePoemFromImage(imageUrl, assisstantId, threadId) {
 
     const completedRun = await waitForRunToFinish(threadId, run.id);
     console.log('Run completed:', completedRun);
-    const lastAssistantMessage = completedRun.messages.find(
+    console.log('Run completed:', run);
+    const lastAssistantMessage = run.messages.find(
       (msg) => { return msg.role === 'assistant'; },
     );
     return lastAssistantMessage?.content ?? null;
