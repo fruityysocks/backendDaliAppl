@@ -80,23 +80,13 @@ export async function generatePoemFromImage(imageUrl, assisstantId, threadId) {
     console.log('Run completed:', completedRun);
     console.log('Run completed:', run);
     const threadMessages = await openai.beta.threads.messages.list(threadId);
-    console.log('All messages:', threadMessages);
+    const threadMessagesReverse = threadMessages.data.reverse();
+    console.log(threadMessagesReverse[0].content[0].text.value);
+    return threadMessagesReverse[0].content[0].text.value;
     // eslint-disable-next-line no-restricted-syntax
-    for (const message of threadMessages.data.reverse()) {
-      if (message.role === 'assistant') console.log(`${message.role} > ${message.content[0].text.value}`);
-    }
-
-    // const lastAssistantMessage = completedRun.messages.find(
-    //   (msg) => { return msg.role === 'assistant'; },
-    // );
-    // return lastAssistantMessage?.content ?? null;
-
-    // const napThreadResponse = await openai.beta.threads.retrieve(
-    //   threadId,
-    // );
-    // console.log('OpenAI completion response:', napThreadResponse);
-    // await fsPromises.unlink(tempPath).catch(() => {});
-    // return 'hi';
+    // for (const message of threadMessages.data.reverse()) {
+    //   if (message.role === 'assistant') console.log(`${message.role} > ${message.content[0].text.value}`);
+    // }
   } catch (error) {
     console.error('Error generating poem from image:', error);
     throw error;
