@@ -42,7 +42,11 @@ export async function newNapFile(req, res) {
           await newNap.save();
           console.log('Saved nap:', newNap);
           if (newNap.napImage) {
-            const poem = await generatePoemFromImage(newNap.napImage, assisstantId, threadId);
+            const poem = await generatePoemFromImage(
+              newNap.napImage,
+              assisstantId,
+              threadId,
+            );
             console.log('Generated Poem:', poem);
             await newNap.updateOne({ generatedPoem: poem });
           }
@@ -120,12 +124,20 @@ export async function getNaps() {
 
     const napsWithImages = await Promise.all(
       naps.map(async (nap) => {
-        const pngBuffer = await jpgToPng(nap.napImage);
-        console.log('h1');
-        console.log(pngBuffer);
+        const response = await axios.get(nap.napImage, {
+          responseType: 'arraybuffer',
+          headers: {
+            Authorization: `Bearer ${process.env.SLACK_BOT_TOKEN}`,
+          },
+        });
+        const contentType = response.headers['content-type'];
+        const imageFile = {
+          data: Buffer.from(response.data, 'binary'),
+          contentType,
+        };
         return {
           ...nap.toObject(),
-          pngBuffer,
+          imageFile,
         };
       }),
     );
