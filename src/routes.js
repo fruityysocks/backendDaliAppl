@@ -12,6 +12,15 @@ router.get('/', (req, res) => {
 // user routes
 
 router.route('/users').get(async (req, res) => {
+  if (req.query) {
+    const { name } = req.query;
+    const user = await Users.findOne({ name });
+    if (user) {
+      res.status(200).json(user);
+    } else {
+      res.status(404).json({ message: 'User not found' });
+    }
+  }
   try {
     const users = await Users.getUsers(req.body);
     return res.status(200).json(users);
