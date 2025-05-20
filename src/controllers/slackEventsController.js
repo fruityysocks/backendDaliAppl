@@ -153,7 +153,21 @@ export async function getNap(napId) {
   try {
     const nap = await Nap.findById(napId);
     console.log('nap found successfully');
-    return nap;
+    const response = await axios.get(nap.napImage, {
+      responseType: 'arraybuffer',
+      headers: {
+        Authorization: `Bearer ${process.env.SLACK_BOT_TOKEN}`,
+      },
+    });
+    const contentType = response.headers['content-type'];
+    const imageFile = {
+      data: Buffer.from(response.data, 'binary').toString('base64'),
+      contentType,
+    };
+    return {
+      ...nap.toObject(),
+      imageFile,
+    };
   } catch (error) {
     throw new Error(`error getting nap: ${error}`);
   }
