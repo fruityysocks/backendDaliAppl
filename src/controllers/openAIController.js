@@ -102,7 +102,7 @@ async function waitForRunToFinish(threadId, runId) {
   while (Date.now() - startTime < timeout) {
     // eslint-disable-next-line no-await-in-loop
     const run = await openai.beta.threads.runs.retrieve(threadId, runId);
-    if (run?.completed_at !== null) {
+    if (run.status === 'completed') {
       console.log('Run completed at:', run.completed_at);
       return true;
     }
