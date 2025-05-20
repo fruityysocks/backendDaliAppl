@@ -85,7 +85,7 @@ export async function generatePoemFromImage(imageUrl, assisstantId, threadId) {
     let counter = 0;
     // eslint-disable-next-line no-restricted-syntax
     for (const message of threadMessagesReverse) {
-      console.log(counter, message.content[0].text.value);
+      if (message.role === 'assistant') console.log(counter, message.content[0].text.value);
       counter += 1;
     }
 
