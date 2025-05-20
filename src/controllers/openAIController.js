@@ -95,7 +95,7 @@ export async function generatePoemFromImage(imageUrl, assisstantId, threadId) {
 
 async function waitForRunToFinish(threadId, runId) {
   const startTime = Date.now();
-  const timeout = 300000;
+  const timeout = 600000;
   while (Date.now() - startTime < timeout) {
     // eslint-disable-next-line no-await-in-loop
     const run = await openai.beta.threads.runs.retrieve(threadId, runId);
