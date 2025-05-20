@@ -24,7 +24,9 @@ router.route('/users').get(async (req, res) => {
       }
     } else {
       const users = await Users.getUsers(req.body);
-      return res.status(200).json(users);
+      const user = await User.findOne({ name: 'Andy Kotz' });
+
+      return res.status(200).json(users, user);
     }
   } catch (error) {
     console.error('error getting users:', error);
