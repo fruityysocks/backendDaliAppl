@@ -20,42 +20,17 @@ router.route('/users').get(async (req, res) => {
       if (user) {
         return res.status(200).json(user);
       } else {
-        return res.status(404).json({ message: 'user not found' });
+        return res.status(404).json({ user: null });
       }
     } else {
-      // const users = await Users.getUsers(req.body);
-      const user = await User.findOne({ name: 'Andy Kotz' });
-
-      return res.status(200).json(user);
+      const users = await Users.getUsers(req.body);
+      return res.status(200).json(users);
     }
   } catch (error) {
     console.error('error getting users:', error);
     return res.status(500).json({ error: `get users error: ${error.message}` });
   }
 });
-
-// router.route(`/users?name=${name}`).get(async (req, res) => {
-//   try {
-//     if (Object.keys(req.query).length > 0) {
-//       const url = new URL(req);
-//       const queryName = url.URLSearchParams.toString();
-//       const user = await User.findOne({ name: queryName });
-//       if (user) {
-//         return res.status(200).json(user);
-//       } else {
-//         return res.status(404).json({ message: 'user not found' });
-//       }
-//     } else {
-//       // const users = await Users.getUsers(req.body);
-//       const user = await User.findOne({ name: 'Andy Kotz' });
-
-//       return res.status(200).json(user);
-//     }
-//   } catch (error) {
-//     console.error('error getting users:', error);
-//     return res.status(500).json({ error: `get users error: ${error.message}` });
-//   }
-// });
 
 router.route('/users/newUser').post(async (req, res) => {
   try {
