@@ -78,15 +78,9 @@ export async function generatePoemFromImage(imageUrl, assisstantId, threadId) {
 
     // eslint-disable-next-line no-unused-vars
     const completedRun = await waitForRunToFinish(threadId, run.id);
-    // console.log('Run completed:', completedRun);
-    // console.log('Run completed:', run);
     const threadMessages = await openai.beta.threads.messages.list(threadId);
     const threadMessagesData = threadMessages.data;
     return String(threadMessagesData[0].content[0].text.value);
-    // eslint-disable-next-line no-restricted-syntax
-    // for (const message of threadMessages.data.reverse()) {
-    //   if (message.role === 'assistant') console.log(`${message.role} > ${message.content[0].text.value}`);
-    // }
   } catch (error) {
     console.error('Error generating poem from image:', error);
     throw error;
@@ -95,7 +89,7 @@ export async function generatePoemFromImage(imageUrl, assisstantId, threadId) {
 
 async function waitForRunToFinish(threadId, runId) {
   const startTime = Date.now();
-  const timeout = 600000;
+  const timeout = 6000;
   while (Date.now() - startTime < timeout) {
     // eslint-disable-next-line no-await-in-loop
     const run = await openai.beta.threads.runs.retrieve(threadId, runId);
@@ -105,6 +99,7 @@ async function waitForRunToFinish(threadId, runId) {
     }
 
     console.log('Still waiting... polling again in 1 second');
+    console.log(run.status);
     // eslint-disable-next-line no-await-in-loop
     await new Promise((resolve) => { setTimeout(resolve, 1000); });
   }

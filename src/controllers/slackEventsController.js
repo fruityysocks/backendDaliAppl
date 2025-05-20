@@ -123,6 +123,16 @@ export async function getNaps() {
   }
 }
 
+export async function getNap(napId) {
+  try {
+    const nap = await Nap.findById(napId);
+    console.log('nap found successfully');
+    return nap;
+  } catch (error) {
+    throw new Error(`error getting nap: ${error}`);
+  }
+}
+
 export async function jpgToPng(url) {
   try {
     const response = await axios.get(url, { responseType: 'arraybuffer' });

@@ -156,4 +156,17 @@ router.route('/naps')
     }
   });
 
+router.route('/naps/:napId')
+  .get(async (req, res) => {
+    try {
+      const nap = await Slacks.getNap(req.params.napId);
+      if (!nap) {
+        return res.status(404).json({ error: 'nap not found' });
+      }
+      return res.json(nap);
+    } catch (error) {
+      console.error('error getting nap:', error);
+      return res.status(404).json({ error: `get nap error: ${error}` });
+    }
+  });
 export default router;
