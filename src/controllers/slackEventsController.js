@@ -117,7 +117,27 @@ export async function getNaps() {
   try {
     const naps = await Nap.find();
     console.log('naps found successfully');
-    return naps;
+
+    const napsWithImages = await Promise.all(
+      naps.map(async (nap) => {
+        let imageBase64 = null;
+
+        try {
+          const pngBuffer = await jpgToPng(nap.imageUrl);
+          imageBase64 = `data:image/png;base64,${pngBuffer.toString('base64')}`;
+        } catch (err) {
+          console.warn(`Failed to fetch/convert image for nap ${nap._id}: ${err.message}`);
+        }
+
+        return {
+          ...nap.toObject(),
+          imageBase64,
+        };
+      }),
+    );
+
+    console.log('naps found successfully');
+    return napsWithImages;
   } catch (error) {
     throw new Error(`get naps error: ${error}`);
   }
