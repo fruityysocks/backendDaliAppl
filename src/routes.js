@@ -2,6 +2,7 @@ import { Router } from 'express';
 import * as Posts from './controllers/postController';
 import * as Users from './controllers/userController';
 import * as Slacks from './controllers/slackEventsController';
+import User from './models/userModel';
 
 const router = Router();
 
@@ -14,7 +15,7 @@ router.get('/', (req, res) => {
 router.route('/users').get(async (req, res) => {
   if (req.query) {
     const { name } = req.query;
-    const user = await Users.findOne({ name });
+    const user = await User.findOne({ name });
     if (user) {
       res.status(200).json(user);
     } else {
