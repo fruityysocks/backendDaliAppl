@@ -18,8 +18,6 @@ router.route('/users').get(async (req, res) => {
     const user = await User.findOne({ name });
     if (user) {
       res.status(200).json(user);
-    } else {
-      res.status(404).json({ message: 'User not found' });
     }
   }
   try {
