@@ -124,6 +124,7 @@ export async function getNaps() {
 
         try {
           const pngBuffer = await jpgToPng(nap.imageUrl);
+          console.log(pngBuffer);
           imageBase64 = `data:image/png;base64,${pngBuffer.toString('base64')}`;
         } catch (err) {
           console.warn(`Failed to fetch/convert image for nap ${nap._id}: ${err.message}`);
