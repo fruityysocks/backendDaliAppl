@@ -121,9 +121,10 @@ export async function getNaps() {
     const napsWithImages = await Promise.all(
       naps.map(async (nap) => {
         // let imageBase64 = null;
+        let pngBuffer = null;
 
         try {
-          const pngBuffer = await jpgToPng(nap.imageUrl);
+          pngBuffer = await jpgToPng(nap.imageUrl);
           console.log(pngBuffer);
           // imageBase64 = `data:image/png;base64,${pngBuffer.toString('base64')}`;
         } catch (err) {
@@ -133,6 +134,7 @@ export async function getNaps() {
         return {
           ...nap.toObject(),
           // imageBase64,
+          pngBuffer,
         };
       }),
     );
