@@ -132,7 +132,7 @@ export async function getNaps() {
         });
         const contentType = response.headers['content-type'];
         const imageFile = {
-          data: Buffer.from(response.data, 'binary'),
+          data: Buffer.from(response.data, 'binary').toString('base64'),
           contentType,
         };
         return {
