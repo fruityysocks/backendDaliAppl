@@ -1,4 +1,5 @@
 import { Router } from 'express';
+import { useParams } from 'react-router';
 import * as Posts from './controllers/postController';
 import * as Users from './controllers/userController';
 import * as Slacks from './controllers/slackEventsController';
@@ -15,7 +16,8 @@ router.get('/', (req, res) => {
 router.route('/users').get(async (req, res) => {
   try {
     if (Object.keys(req.query).length > 0) {
-      const { queryName } = req.query;
+      const params = useParams();
+      const { queryName } = params.name;
       const user = await User.findOne({ name: queryName });
       if (user) {
         return res.status(200).json(user);
