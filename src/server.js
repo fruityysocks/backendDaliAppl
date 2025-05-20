@@ -4,7 +4,7 @@ import morgan from 'morgan';
 import mongoose from 'mongoose';
 import dotenv from 'dotenv';
 import apiRoutes from './routes';
-import { fetchOldNaps } from './controllers/slackEventsController';
+import { fetchOldNaps, backfillReplies } from './controllers/slackEventsController';
 import { initialisingOpenAI } from './controllers/openAIController';
 
 const app = express();
@@ -43,6 +43,18 @@ app.get('/import-old-naps', async (req, res) => {
   }
 });
 
+app.get('/update-old-naps', async (req, res) => {
+  try {
+    await backfillReplies();
+    const { assistantId, threadId } = await initialisingOpenAI();
+    await fetchOldNaps(napChannelId, assistantId, threadId);
+    res.setHeader('Content-Type', 'text/plain');
+    res.send('Imported old naps!');
+  } catch (err) {
+    console.error('Error importing old naps:', err);
+    res.status(500).send('Error importing old naps');
+  }
+});
 async function startServer() {
   try {
     await mongoose.connect(mongoUri);

@@ -23,6 +23,15 @@ const NapSchema = new Schema(
     generatedPoem: {
       type: String,
     },
+    replies: {
+      type: [
+        {
+          message: { type: String, required: true },
+          timestamp: { type: Date, default: Date.now },
+        },
+      ],
+      default: [],
+    },
   },
   {
     toObject: { virtuals: true },
