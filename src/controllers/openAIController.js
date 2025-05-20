@@ -81,6 +81,10 @@ export async function generatePoemFromImage(imageUrl, assisstantId, threadId) {
     console.log('Run completed:', run);
     const threadMessages = await openai.beta.threads.messages.list(threadId);
     console.log('All messages:', threadMessages);
+    // eslint-disable-next-line no-restricted-syntax
+    for (const message of threadMessages.data.reverse()) {
+      console.log(`${message.role} > ${message.content[0].text.value}`);
+    }
 
     // const lastAssistantMessage = completedRun.messages.find(
     //   (msg) => { return msg.role === 'assistant'; },
