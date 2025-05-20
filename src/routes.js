@@ -13,19 +13,22 @@ router.get('/', (req, res) => {
 // user routes
 
 router.route('/users').get(async (req, res) => {
-  if (req.query) {
-    const { name } = req.query;
-    const user = await User.findOne({ name });
-    if (user) {
-      res.status(200).json(user);
-    }
-  }
   try {
-    const users = await Users.getUsers(req.body);
-    return res.status(200).json(users);
+    if (Object.keys(req.query).length > 0) {
+      const { name } = req.query;
+      const user = await User.findOne({ name });
+      if (user) {
+        return res.status(200).json(user);
+      } else {
+        return res.status(404).json({ message: 'user not found' });
+      }
+    } else {
+      const users = await Users.getUsers(req.body);
+      return res.status(200).json(users);
+    }
   } catch (error) {
     console.error('error getting users:', error);
-    return res.status(404).json({ error: `get users error: ${error}` });
+    return res.status(500).json({ error: `get users error: ${error.message}` });
   }
 });
 
