@@ -76,12 +76,14 @@ export async function generatePoemFromImage(imageUrl, assisstantId, threadId) {
       assistant_id: assisstantId,
     });
 
+    // eslint-disable-next-line no-unused-vars
     const completedRun = await waitForRunToFinish(threadId, run.id);
-    console.log('Run completed:', completedRun);
-    console.log('Run completed:', run);
+    // console.log('Run completed:', completedRun);
+    // console.log('Run completed:', run);
     const threadMessages = await openai.beta.threads.messages.list(threadId);
     const threadMessagesReverse = threadMessages.data.reverse();
-    console.log(threadMessagesReverse[0].content[0].text.value);
+    console.log(threadMessagesReverse);
+    // console.log(threadMessagesReverse[0].content[0].text.value);
     return String(threadMessagesReverse[0].content[0].text.value);
     // eslint-disable-next-line no-restricted-syntax
     // for (const message of threadMessages.data.reverse()) {
