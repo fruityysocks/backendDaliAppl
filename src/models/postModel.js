@@ -16,10 +16,6 @@ const PostSchema = new Schema(
       type: String,
       required: true,
     },
-    // tags: {
-    //   type: [String],
-    //   required: true,
-    // },
   },
   {
     toObject: { virtuals: true },
