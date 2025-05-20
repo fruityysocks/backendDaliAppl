@@ -3,6 +3,7 @@ import fs from 'fs';
 import axios from 'axios';
 import fsPromises from 'fs/promises';
 import path from 'path';
+import { setTimeout } from 'timers';
 
 const openai = new OpenAI({
   apiKey: process.env.OPENAI_API_KEY,
@@ -95,8 +96,20 @@ export async function generatePoemFromImage(imageUrl, assisstantId, threadId) {
 }
 
 async function waitForRunToFinish(threadId, runId) {
-  const completedRun = await openai.beta.threads.runs.retrieve(threadId, runId);
-  const completedAt = completedRun?.completed_at;
-  if (completedAt !== null) return true;
-  return false;
+  const startTime = Date.now();
+  const timeout = 60000;
+  while (Date.now() - startTime < timeout) {
+    // eslint-disable-next-line no-await-in-loop
+    const run = await openai.beta.threads.runs.retrieve(threadId, runId);
+    if (run?.completed_at !== null) {
+      console.log('Run completed at:', run.completed_at);
+      return true;
+    }
+
+    console.log('Still waiting... polling again in 1 second');
+    // eslint-disable-next-line no-await-in-loop
+    await new Promise((resolve) => { setTimeout(resolve, 1000); });
+  }
+
+  throw new Error('Timed out waiting for run to finish');
 }
