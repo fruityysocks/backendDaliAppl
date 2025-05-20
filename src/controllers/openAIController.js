@@ -96,6 +96,7 @@ export async function generatePoemFromImage(imageUrl, assisstantId, threadId) {
 
 async function waitForRunToFinish(threadId, runId) {
   const completedRun = await openai.beta.threads.runs.retrieve(threadId, runId);
-  if (completedRun.data.completed_at !== 'null') return true;
+  const completedAt = completedRun?.completed_at;
+  if (completedAt !== null) return true;
   return false;
 }
