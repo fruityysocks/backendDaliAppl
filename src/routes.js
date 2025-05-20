@@ -14,6 +14,28 @@ router.get('/', (req, res) => {
 
 router.route('/users').get(async (req, res) => {
   try {
+    const { name } = req.query;
+    if (name) {
+      const user = await User.findOne({ name });
+      if (user) {
+        return res.status(200).json(user);
+      } else {
+        return res.status(404).json({ message: 'user not found' });
+      }
+    } else {
+      // const users = await Users.getUsers(req.body);
+      const user = await User.findOne({ name: 'Andy Kotz' });
+
+      return res.status(200).json(user);
+    }
+  } catch (error) {
+    console.error('error getting users:', error);
+    return res.status(500).json({ error: `get users error: ${error.message}` });
+  }
+});
+
+router.route(`/users?name=${name}`).get(async (req, res) => {
+  try {
     if (Object.keys(req.query).length > 0) {
       const url = new URL(req);
       const queryName = url.URLSearchParams.toString();
