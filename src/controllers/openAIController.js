@@ -79,10 +79,13 @@ export async function generatePoemFromImage(imageUrl, assisstantId, threadId) {
     const completedRun = await waitForRunToFinish(threadId, run.id);
     console.log('Run completed:', completedRun);
     console.log('Run completed:', run);
-    const lastAssistantMessage = completedRun.messages.find(
-      (msg) => { return msg.role === 'assistant'; },
-    );
-    return lastAssistantMessage?.content ?? null;
+    const threadMessages = await openai.beta.threads.messages.list(threadId);
+    console.log('All messages:', threadMessages);
+
+    // const lastAssistantMessage = completedRun.messages.find(
+    //   (msg) => { return msg.role === 'assistant'; },
+    // );
+    // return lastAssistantMessage?.content ?? null;
 
     // const napThreadResponse = await openai.beta.threads.retrieve(
     //   threadId,
