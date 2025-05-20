@@ -79,7 +79,7 @@ export async function generatePoemFromImage(imageUrl, assisstantId, threadId) {
     const completedRun = await waitForRunToFinish(threadId, run.id);
     console.log('Run completed:', completedRun);
     console.log('Run completed:', run);
-    const lastAssistantMessage = run.messages.find(
+    const lastAssistantMessage = completedRun.messages.find(
       (msg) => { return msg.role === 'assistant'; },
     );
     return lastAssistantMessage?.content ?? null;
@@ -104,7 +104,7 @@ async function waitForRunToFinish(threadId, runId) {
     const run = await openai.beta.threads.runs.retrieve(threadId, runId);
     if (run.status === 'completed') {
       console.log('Run completed at:', run.completed_at);
-      return true;
+      return run;
     }
 
     console.log('Still waiting... polling again in 1 second');
