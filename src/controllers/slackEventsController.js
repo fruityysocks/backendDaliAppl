@@ -190,18 +190,6 @@ export async function jpgToPng(url) {
   }
 }
 
-export async function backfillReplies() {
-  try {
-    const result = await Nap.updateMany(
-      { replies: { $exists: false } },
-      { $set: { replies: [] } },
-    );
-    console.log('Backfilled replies:', result.modifiedCount);
-  } catch (err) {
-    console.error('Error backfilling replies:', err);
-  }
-}
-
 export async function addReplyToNap(napId, message) {
   const nap = await Nap.findById(napId);
   if (!nap) throw new Error('Nap not found');

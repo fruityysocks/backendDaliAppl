@@ -169,4 +169,29 @@ router.route('/naps/:napId')
       return res.status(404).json({ error: `get nap error: ${error}` });
     }
   });
+
+router.route('/naps/:napId/addReply')
+  .put(async (req, res) => {
+    const { napId } = req.params;
+    const { message } = req.body;
+
+    if (!message) {
+      return res.status(400).json({ error: 'Reply message is required.' });
+    }
+
+    try {
+      const nap = await Slacks.getNap(napId);
+      if (!nap) {
+        return res.status(404).json({ error: 'Nap not found.' });
+      }
+
+      nap.replies.push({ message, timestamp: new Date() });
+      await nap.save();
+
+      return res.status(200).json({ message: 'Reply added successfully.', nap });
+    } catch (err) {
+      console.error('Error adding reply:', err);
+      return res.status(500).json({ error: 'Internal server error.' });
+    }
+  });
 export default router;
