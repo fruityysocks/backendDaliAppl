@@ -1,5 +1,4 @@
 import User from '../models/userModel';
-import Post from '../models/postModel';
 
 export async function createUser(userFields) {
   const user = new User();
