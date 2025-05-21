@@ -26,7 +26,7 @@ app.get('/', (req, res) => {
   res.send('hi');
 });
 
-app.use('/api', apiRoutes);
+app.use('https://frontenddaliappl.onrender.com//api', apiRoutes);
 
 const mongoUri = process.env.MONGO_URI;
 const napChannelId = process.env.NAPS_CHANNEL_ID;
