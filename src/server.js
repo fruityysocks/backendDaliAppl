@@ -11,7 +11,7 @@ const app = express();
 dotenv.config();
 
 app.use(cors({
-  origin: 'https://frontenddaliappl.onrender.com/',
+  origin: 'https:/frontenddaliappl.onrender.com/',
   methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
   allowedHeaders: ['Content-Type', 'Authorization'],
   credentials: true,
@@ -26,7 +26,7 @@ app.get('/', (req, res) => {
   res.send('hi');
 });
 
-app.use('https://frontenddaliappl.onrender.com//api', apiRoutes);
+app.use('https:/frontenddaliappl.onrender.com/api', apiRoutes);
 
 const mongoUri = process.env.MONGO_URI;
 const napChannelId = process.env.NAPS_CHANNEL_ID;
