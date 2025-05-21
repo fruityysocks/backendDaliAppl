@@ -12,8 +12,8 @@ dotenv.config();
 
 app.use(cors({
   origin: 'https:/frontenddaliappl.onrender.com',
-  methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
-  allowedHeaders: ['Content-Type', 'Authorization'],
+  // methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
+  // allowedHeaders: ['Content-Type', 'Authorization'],
   credentials: true,
 }));
 
