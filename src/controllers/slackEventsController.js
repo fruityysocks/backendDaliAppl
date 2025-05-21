@@ -2,7 +2,6 @@
 /* eslint-disable no-await-in-loop */
 import axios from 'axios';
 import sharp from 'sharp';
-// import WebClient from '@slack/web-api';
 import Nap from '../models/napModel';
 import { generatePoemFromImage } from './openAIController';
 
@@ -40,14 +39,12 @@ export async function newNapFile(req, res) {
           });
 
           await newNap.save();
-          console.log('Saved nap:', newNap);
           if (newNap.napImage) {
             const poem = await generatePoemFromImage(
               newNap.napImage,
               assisstantId,
               threadId,
             );
-            console.log('Generated Poem:', poem);
             await newNap.updateOne({ generatedPoem: poem });
           }
         }
@@ -76,7 +73,6 @@ export async function fetchOldNaps(channelId, assisstantId, threadId) {
     });
     // eslint-disable-next-line no-undef
     const { messages, response_metadata } = result;
-    console.log(`Fetched ${messages.length} messages`);
 
     // eslint-disable-next-line no-restricted-syntax
     for (const msg of messages) {
@@ -102,7 +98,6 @@ export async function fetchOldNaps(channelId, assisstantId, threadId) {
           console.log(`Saved old nap from ${userInfo.user.real_name}`);
           if (newNap.napImage) {
             const poem = await generatePoemFromImage(newNap.napImage, aId, tId);
-            console.log('Generated Poem:', poem);
             await newNap.updateOne({ generatedPoem: poem });
           }
         }
@@ -120,8 +115,6 @@ export async function fetchOldNaps(channelId, assisstantId, threadId) {
 export async function getNaps() {
   try {
     const naps = await Nap.find();
-    console.log('naps found successfully');
-
     const napsWithImages = await Promise.all(
       naps.map(async (nap) => {
         const response = await axios.get(nap.napImage, {
@@ -145,7 +138,6 @@ export async function getNaps() {
       }),
     );
 
-    console.log('images converted successfully');
     return napsWithImages;
   } catch (error) {
     throw new Error(`get naps error: ${error}`);
@@ -155,7 +147,6 @@ export async function getNaps() {
 export async function getNap(napId) {
   try {
     const nap = await Nap.findById(napId);
-    console.log('nap found successfully');
     const response = await axios.get(nap.napImage, {
       responseType: 'arraybuffer',
       headers: {
@@ -183,9 +174,6 @@ export async function jpgToPng(url) {
   try {
     const response = await axios.get(url, {
       responseType: 'arraybuffer',
-      // headers: {
-      //   Authorization: `Bearer ${process.env.SLACK_BOT_TOKEN}`,
-      // },
     });
     const imageBuffer = Buffer.from(response.data, 'binary');
     const pngBuffer = await sharp(imageBuffer).png().toBuffer();

@@ -11,14 +11,7 @@ const openai = new OpenAI({
 
 export async function initialisingOpenAI() {
   const assistant = await createAssistant();
-  // const thread = await openai.beta.threads.create();
   const assistantId = assistant.id;
-  // const threadId = thread.id;
-  // await openai.beta.threads.messages.create(threadId, {
-  //   role: 'user',
-  //   content: 'Write a three sentence long poem for each of the images below. Keep it short and funny; do not make potentially offensive jokes or use curse words.',
-  // });
-
   return { assistantId };
 }
 
@@ -31,7 +24,6 @@ async function createAssistant() {
         'You are a funny poet bot. When you recieve an image you come up with amusing poetry inspired from the image.',
       tools: [{ type: 'code_interpreter' }],
     });
-    console.log('Assistant created:', assistant);
     return assistant;
   } catch (error) {
     console.error('Error creating assistant:', error);
@@ -77,8 +69,6 @@ export async function generatePoemFromImage(imageUrl, assisstantId) {
       ],
     });
 
-    console.log('thread updated');
-
     const run = await openai.beta.threads.runs.create(threadId, {
       assistant_id: assisstantId,
     });
@@ -101,12 +91,10 @@ async function waitForRunToFinish(threadId, runId) {
     // eslint-disable-next-line no-await-in-loop
     const run = await openai.beta.threads.runs.retrieve(threadId, runId);
     if (run.status === 'completed') {
-      console.log('Run completed at:', run.completed_at);
       return run;
     }
 
     console.log('Still waiting... polling again in 1 second');
-    console.log(run.status);
     // eslint-disable-next-line no-await-in-loop
     await new Promise((resolve) => { setTimeout(resolve, 1000); });
   }

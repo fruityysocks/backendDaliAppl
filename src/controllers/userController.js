@@ -24,7 +24,6 @@ export async function createUser(userFields) {
 
   try {
     const savedUser = await user.save();
-    console.log('user created successfully');
     return savedUser;
   } catch (error) {
     throw new Error(`create user error: ${error}`);
@@ -34,7 +33,6 @@ export async function createUser(userFields) {
 export async function getUsers() {
   try {
     const users = await User.find();
-    console.log('users found successfully');
     return users;
   } catch (error) {
     throw new Error(`get users error: ${error}`);
@@ -44,7 +42,6 @@ export async function getUsers() {
 export async function getUser(userId) {
   try {
     const user = await User.findById(userId);
-    console.log('user found successfully');
     return user;
   } catch (error) {
     throw new Error(`error getting user: ${error}`);
@@ -54,7 +51,6 @@ export async function getUser(userId) {
 export async function updateUser(userId, userFields) {
   try {
     const updatedUser = await User.findByIdAndUpdate(userId, userFields, { new: true });
-    console.log('user updated successfully');
     return updatedUser;
   } catch (error) {
     throw new Error(`update user error: ${error}`);
@@ -64,7 +60,6 @@ export async function updateUser(userId, userFields) {
 export async function deleteUser(userId) {
   try {
     await User.findByIdAndDelete(userId);
-    console.log('user deleted successfully');
   } catch (error) {
     throw new Error(`delete user error: ${error}`);
   }

@@ -11,7 +11,7 @@ const app = express();
 dotenv.config();
 
 app.use(cors({
-  origin: 'https://frontenddaliappl.onrender.com',
+  origin: 'https://frontenddaliappl.onrender.com/api',
   methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
   allowedHeaders: ['Content-Type', 'Authorization'],
   credentials: true,
@@ -27,7 +27,6 @@ app.get('/', (req, res) => {
 });
 
 app.use('/api', apiRoutes);
-// app.use('/slack', slackRoutes);
 
 const mongoUri = process.env.MONGO_URI;
 const napChannelId = process.env.NAPS_CHANNEL_ID;
