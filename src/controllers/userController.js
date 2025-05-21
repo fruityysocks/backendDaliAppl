@@ -51,16 +51,6 @@ export async function getUser(userId) {
   }
 }
 
-export async function getPostsByUser(userId) {
-  try {
-    const posts = await Post.find({ authorRef: userId });
-    console.log('posts by user found successfully');
-    return posts;
-  } catch (error) {
-    throw new Error(`error getting posts by user: ${error}`);
-  }
-}
-
 export async function updateUser(userId, userFields) {
   try {
     const updatedUser = await User.findByIdAndUpdate(userId, userFields, { new: true });
