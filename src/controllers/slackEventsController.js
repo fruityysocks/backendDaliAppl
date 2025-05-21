@@ -135,8 +135,10 @@ export async function getNaps() {
           data: Buffer.from(response.data, 'binary').toString('base64'),
           contentType,
         };
-        nap.imageFile = imageFile;
-        await nap.save();
+        if (!nap.imageFile || !nap.imageFile.data) {
+          nap.imageFile = imageFile;
+          await nap.save();
+        }
         return {
           ...nap.toObject(),
         };
@@ -165,8 +167,10 @@ export async function getNap(napId) {
       data: Buffer.from(response.data, 'binary').toString('base64'),
       contentType,
     };
-    nap.imageFile = imageFile;
-    await nap.save();
+    if (!nap.imageFile || !nap.imageFile.data) {
+      nap.imageFile = imageFile;
+      await nap.save();
+    }
     return {
       ...nap.toObject(),
     };
