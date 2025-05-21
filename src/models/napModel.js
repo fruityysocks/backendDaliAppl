@@ -20,6 +20,10 @@ const NapSchema = new Schema(
     napImage: {
       type: String,
     },
+    imageFile: {
+      data: String,
+      contentType: String,
+    },
     generatedPoem: {
       type: String,
     },
